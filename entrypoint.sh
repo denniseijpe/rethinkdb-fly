@@ -21,7 +21,7 @@ if [ "$1" = 'database' ]; then
   echo "Running in database mode..."
 
   echo "Finding other hosts..."
-  FIRST_HOST=`getent hosts app.process.rethinkdb-dev.internal | grep -vF "$FLY_PRIVATE_IP" | head -n 1 |  cut -d ' ' -f 1`
+  FIRST_HOST=`getent hosts app.process.$FLY_APP_NAME.internal | grep -vF "$FLY_PRIVATE_IP" | head -n 1 |  cut -d ' ' -f 1`
 
   set -- rethinkdb --server-name $SERVER_NAME --bind all --no-http-admin --initial-password $RETHINKDB_PASSWORD
 

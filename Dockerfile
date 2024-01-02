@@ -7,7 +7,8 @@ COPY probe.go go.mod go.sum /go/src/rethinkdb-probe/
 RUN CGO_ENABLED=0 GOOS=linux go build -a -ldflags '-w -s' -o /target/rethinkdb-probe .
 
 
-FROM rethinkdb:2.4.2
+# Build rethinkdb image with probe and entrypoint included
+FROM rethinkdb:2.4.4-bookworm-slim
 
 COPY entrypoint.sh /bin/
 COPY --from=probe /target/rethinkdb-probe /bin/
@@ -17,4 +18,3 @@ HEALTHCHECK --interval=20s --timeout=10s --retries=3 \
 
 ENTRYPOINT ["/bin/entrypoint.sh"]
 CMD ["database"]
-

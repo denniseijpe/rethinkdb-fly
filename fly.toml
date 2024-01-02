@@ -1,18 +1,35 @@
-# fly.toml app configuration file generated for rethinkdb-dev on 2023-08-09T16:18:03+02:00
+# fly.toml app configuration file generated for savvy-rethinkdb on 2024-01-02T10:24:45+01:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
 app = "rethinkdb-dev"
 primary_region = "ams"
+swap_size_mb = 1024
 
 [build]
 
 [processes]
-app = ""
-proxy = "proxy"
+  app = ""
+  proxy = "proxy"
 
-[mounts]
-source = "data"
-destination = "/data"
-processes = ["app"]
+[[mounts]]
+  source = "data"
+  destination = "/data"
+  processes = ["app"]
+  initial_size = "1gb"
+  auto_extend_size_threshold = 80
+  auto_extend_size_increment = "1gb"
+  auto_extend_size_limit = "20gb"
+
+[[vm]]
+  cpu_kind = "shared"
+  cpus = 1
+  memory_mb = 512
+  processes = ["app"]
+
+[[vm]]
+  cpu_kind = "shared"
+  cpus = 1
+  memory_mb = 256
+  processes = ["proxy"]
